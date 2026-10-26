@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transaksi Penjualan - JieLo Ice Cream</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #ffd7f6;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Sidebar Kiri - Kuning Krem Pastel */
+    .sidebar {
+      width: 270px;
+      background-color: #fcf4c4;
+      border-right: 2px solid #f3e5ab;
+      display: flex;
+      flex-direction: column;
+      padding: 25px 20px;
+      min-height: 100vh;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 35px;
+    }
+
+    .logo-img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #00838f;
+      line-height: 1.1;
+    }
+
+    .menu-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .menu-item a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      text-decoration: none;
+      color: #2b6cb0;
+      font-weight: 700;
+      font-size: 15px;
+      background-color: #cbe3fb;
+      border: 1.5px solid #90caf9;
+      border-radius: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+      transition: all 0.2s;
+    }
+
+    .menu-item.active a, .menu-item a:hover {
+      background-color: #a3d0fb;
+      border-color: #64b5f6;
+      color: #1e40af;
+      transform: translateY(-1px);
+    }
+
+    .menu-item-logout a {
+      background-color: #fed7d7;
+      color: #9b2c2c;
+      border-color: #feb2b2;
+    }
+
+    .menu-item-logout a:hover {
+      background-color: #feb2b2;
+      color: #742a2a;
+    }
+
+    /* Area Utama Konten */
+    .main-content {
+      flex: 1;
+      padding: 25px 30px;
+      overflow-y: auto;
+    }
+
+    .page-header {
+      margin-bottom: 20px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      color: #ff527b;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: #666;
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    /* Tab Kasir / Riwayat Penjualan */
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      padding: 8px 22px;
+      border-radius: 16px;
+      border: 1.5px solid #ff85a2;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      background: #ffffff;
+      color: #ff527b;
+    }
+
+    .tab-btn.active {
+      background: #ff527b;
+      color: #ffffff;
+      border-color: #ff527b;
+    }
+
+    /* Layout Kasir 2 Kolom */
+    .cashier-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 20px;
+    }
+
+    .card-box {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
+    /* Search Input Produk Kasir */
+    .search-box {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e0;
+      border-radius: 20px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-box i { color: #a0aec0; }
+    .search-box input { border: none; outline: none; width: 100%; font-size: 13px; }
+
+    /* Grid Produk Es Krim Sesuai Canva */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .product-item-card {
+      background: #ffffff;
+      border: 1.5px solid #ffd0f3;
+      border-radius: 18px;
+      padding: 10px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-img-box {
+      background: #ffdbf4;
+      border-radius: 12px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .product-img-box i {
+      font-size: 36px;
+      color: #ff527b;
+    }
+
+    .badge-cat {
+      background: #ff85a2;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+
+    .item-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #2d3748;
+      line-height: 1.2;
+    }
+
+    .item-merk {
+      font-size: 10px;
+      color: #718096;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .item-price {
+      font-size: 13px;
+      font-weight: 800;
+      color: #ff527b;
+    }
+
+    .item-stock {
+      font-size: 10px;
+      color: #718096;
+      font-weight: 600;
+    }
+
+    .card-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 6px;
+    }
+
+    .btn-add-cart {
+      background: #ff527b;
+      color: white;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Keranjang Penjualan Kanan */
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #edf2f7;
+      padding-bottom: 10px;
+    }
+
+    .cart-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #2d3748;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cart-title i { color: #ff527b; }
+
+    .btn-reset-cart {
+      background: none;
+      border: none;
+      color: #ff527b;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .cart-items-list {
+      min-height: 160px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+    }
+
+    .cart-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #4a5568;
+    }
+
+    .summary-box {
+      background: #ffffff;
+      border-top: 1px solid #edf2f7;
+      padding-top: 12px;
+      margin-bottom: 15px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: #718096;
+      margin-bottom: 8px;
+    }
+
+    .summary-row.total {
+      font-size: 16px;
+      font-weight: 800;
+      color: #2d3748;
+      border-top: 1px dashed #cbd5e0;
+      padding-top: 8px;
+    }
+
+    .summary-row.total span:last-child {
+      color: #718096;
+    }
+
+    .method-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #4a5568;
+      margin-bottom: 6px;
+    }
+
+    .pay-btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .btn-pay-type {
+      background: #ffffff;
+      border: 1.5px solid #cbd5e0;
+      padding: 8px;
+      border-radius: 10px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #4a5568;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-pay-type.active {
+      background: #ffb6e9;
+      border-color: #ff85a2;
+      color: #2d3748;
+    }
+
+    .btn-process {
+      width: 100%;
+      background: #ff527b;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(255, 82, 123, 0.3);
+    }
+
+    /* View Riwayat Transaksi */
+    #riwayatView { display: none; }
+    
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .history-table th {
+      text-align: left;
+      padding: 12px 16px;
+      color: #2d3748;
+      font-weight: 800;
+      border-bottom: 2px solid #edf2f7;
+    }
+
+    .history-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #edf2f7;
+      color: #4a5568;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Kiri -->
+  <div class="sidebar">
+    <div class="brand-logo">
+      <img src="logoremove.png" alt="JieLo Logo" class="logo-img">
+      <div class="brand-title">JieLo<br>Ice Cream</div>
+    </div>
+
+    <ul class="menu-list">
+      <li class="menu-item"><a href="dashboard.html"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+      <li class="menu-item active"><a href="transaksi.html"><i class="fa-solid fa-receipt"></i> Transaksi</a></li>
+      <li class="menu-item"><a href="produk.html"><i class="fa-solid fa-box"></i> Produk</a></li>
+      <li class="menu-item"><a href="stok.html"><i class="fa-solid fa-boxes-stacked"></i> Stok Barang</a></li>
+      <li class="menu-item"><a href="laporan.html"><i class="fa-solid fa-chart-line"></i> Laporan</a></li>
+      <li class="menu-item"><a href="zakat.html"><i class="fa-solid fa-hand-holding-dollar"></i> Zakat Mal</a></li>
+      <li class="menu-item menu-item-logout"><a href="index.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+    </ul>
+  </div>
+
+  <!-- Area Utama Konten -->
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">TRANSAKSI PENJUALAN</h1>
+      <p class="page-subtitle">Pilih & catat penjualan produk es krim</p>
+    </div>
+
+    <!-- Navigasi Tab -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" id="tabKasir">Kasir</button>
+      <button class="tab-btn" id="tabRiwayat">Riwayat Penjualan</button>
+    </div>
+
+    <!-- TAMPILAN KASIR -->
+    <div id="kasirView" class="cashier-grid">
+      <!-- Produk Kiri -->
+      <div class="card-box">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="searchProduct" placeholder="Cari nama es krim...">
+        </div>
+
+        <div class="product-grid" id="productGrid">
+          <div class="product-item-card">
+            <div class="product-img-box"><i class="fa-solid fa-ice-cream"></i></div>
+            <div>
+              <span class="badge-cat">5 Liter</span>
+              <div class="item-title">Neapolitan</div>
+              <div class="item-merk">Campina</div>
+            </div>
+            <div class="card-bottom-row">
+              <div>
+                <div class="item-price">Rp 175.000</div>
+                <div class="item-stock">Stok: 4</div>
+              </div>
+              <button class="btn-add-cart" onclick="addToCart('Neapolitan', 175000)">+</button>
+            </div>
+          </div>
+
+          <div class="product-item-card">
+            <div class="product-img-box"><i class="fa-solid fa-ice-cream"></i></div>
+            <div>
+              <span class="badge-cat">Cup</span>
+              <div class="item-title">Populaire coklat</div>
+              <div class="item-merk">Wall's</div>
+            </div>
+            <div class="card-bottom-row">
+              <div>
+                <div class="item-price">Rp 4.000</div>
+                <div class="item-stock">Stok: 7</div>
+              </div>
+              <button class="btn-add-cart" onclick="addToCart('Populaire coklat', 4000)">+</button>
+            </div>
+          </div>
+
+          <div class="product-item-card">
+            <div class="product-img-box"><i class="fa-solid fa-ice-cream"></i></div>
+            <div>
+              <span class="badge-cat">5 Liter</span>
+              <div class="item-title">Neapolitan</div>
+              <div class="item-merk">Miami</div>
+            </div>
+            <div class="card-bottom-row">
+              <div>
+                <div class="item-price">Rp 150.000</div>
+                <div class="item-stock">Stok: 10</div>
+              </div>
+              <button class="btn-add-cart" onclick="addToCart('Neapolitan Miami', 150000)">+</button>
+            </div>
+          </div>
+
+          <div class="product-item-card">
+            <div class="product-img-box"><i class="fa-solid fa-ice-cream"></i></div>
+            <div>
+              <span class="badge-cat">Stick</span>
+              <div class="item-title">Es Susu</div>
+              <div class="item-merk">Joyday</div>
+            </div>
+            <div class="card-bottom-row">
+              <div>
+                <div class="item-price">Rp 2.000</div>
+                <div class="item-stock">Stok: 50</div>
+              </div>
+              <button class="btn-add-cart" onclick="addToCart('Es Susu', 2000)">+</button>
+            </div>
+          </div>
+
+          <div class="product-item-card">
+            <div class="product-img-box"><i class="fa-solid fa-box-open"></i></div>
+            <div>
+              <span class="badge-cat">Dus</span>
+              <div class="item-title">Espessia Strawberry</div>
+              <div class="item-merk">Indofood</div>
+            </div>
+            <div class="card-bottom-row">
+              <div>
+                <div class="item-price">Rp 98.000</div>
+                <div class="item-stock">Stok: 3</div>
+              </div>
+              <button class="btn-add-cart" onclick="addToCart('Espessia Strawberry', 98000)">+</button>
+            </div>
+          </div>
+
+          <div class="product-item-card">
+            <div class="product-img-box"><i class="fa-solid fa-ice-cream"></i></div>
+            <div>
+              <span class="badge-cat">Eceran</span>
+              <div class="item-title">Paddle pop choco magma</div>
+              <div class="item-merk">Joyday</div>
+            </div>
+            <div class="card-bottom-row">
+              <div>
+                <div class="item-price">Rp 2.000</div>
+                <div class="item-stock">Stok: 50</div>
+              </div>
+              <button class="btn-add-cart" onclick="addToCart('Paddle pop choco magma', 2000)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Keranjang Kanan -->
+      <div class="card-box">
+        <div class="cart-header">
+          <span class="cart-title"><i class="fa-solid fa-basket-shopping"></i> Keranjang Penjualan</span>
+          <button class="btn-reset-cart" onclick="resetCart()">Reset</button>
+        </div>
+
+        <div class="cart-items-list" id="cartList">
+          <div style="text-align:center; color:#a0aec0; margin-top:40px; font-size:11px;">
+            <p>Keranjang masih kosong.</p>
+            <p>Klik produk di samping untuk menambahkan.</p>
+          </div>
+        </div>
+
+        <div class="summary-box">
+          <div class="summary-row"><span>Subtotal</span><span id="txtSubtotal">Rp 0</span></div>
+          <div class="summary-row total"><span>Total Bayar</span><span id="txtTotal">Rp 0</span></div>
+        </div>
+
+        <div class="method-label">Metode Pembayaran:</div>
+        <div class="pay-btn-group">
+          <button class="btn-pay-type active" id="btnPayTunai" onclick="selectPayment('Tunai')"><i class="fa-solid fa-money-bill-wave"></i> Tunai</button>
+          <button class="btn-pay-type" id="btnPayQris" onclick="selectPayment('Qris/Transfer')"><i class="fa-solid fa-qrcode"></i> Qris/Transfer</button>
+        </div>
+
+        <button class="btn-process" onclick="processPayment()"><i class="fa-solid fa-print"></i> PROSES & CETAK NOTA</button>
+      </div>
+    </div>
+
+    <!-- TAMPILAN RIWAYAT PENJUALAN -->
+    <div id="riwayatView" class="card-box">
+      <h2 style="font-size:18px; color:#2d3748; margin-bottom:15px;">Daftar Transaksi Penjualan</h2>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>No. Transaksi</th>
+            <th>Tanggal</th>
+            <th>Metode</th>
+            <th>Total Harga</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody">
+          <tr><td>TRX001</td><td>24/10/26</td><td>Tunai</td><td>Rp 175.000</td></tr>
+          <tr><td>TRX002</td><td>24/10/26</td><td>Qris/Transfer</td><td>Rp 8.000</td></tr>
+          <tr><td>TRX003</td><td>24/10/26</td><td>Tunai</td><td>Rp 2.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+    // Counter Transaksi
+    let trxCounter = 4;
+
+    // Tab Switching
+    const tabKasir = document.getElementById('tabKasir');
+    const tabRiwayat = document.getElementById('tabRiwayat');
+    const kasirView = document.getElementById('kasirView');
+    const riwayatView = document.getElementById('riwayatView');
+
+    tabKasir.addEventListener('click', () => {
+      tabKasir.classList.add('active');
+      tabRiwayat.classList.remove('active');
+      kasirView.style.display = 'grid';
+      riwayatView.style.display = 'none';
+    });
+
+    tabRiwayat.addEventListener('click', () => {
+      tabRiwayat.classList.add('active');
+      tabKasir.classList.remove('active');
+      kasirView.style.display = 'none';
+      riwayatView.style.display = 'block';
+    });
+
+    // Pilihan Metode Pembayaran
+    let selectedMethod = 'Tunai';
+    const btnPayTunai = document.getElementById('btnPayTunai');
+    const btnPayQris = document.getElementById('btnPayQris');
+
+    function selectPayment(method) {
+      selectedMethod = method;
+      if (method === 'Tunai') {
+        btnPayTunai.classList.add('active');
+        btnPayQris.classList.remove('active');
+      } else {
+        btnPayQris.classList.add('active');
+        btnPayTunai.classList.remove('active');
+      }
+    }
+
+    // Keranjang Logic
+    let cart = [];
+    let currentTotal = 0;
+    const fmt = (num) => 'Rp ' + num.toLocaleString('id-ID');
+
+    function addToCart(name, price) {
+      const exist = cart.find(item => item.name === name);
+      if (exist) {
+        exist.qty++;
+      } else {
+        cart.push({ name, price, qty: 1 });
+      }
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartList = document.getElementById('cartList');
+      if (cart.length === 0) {
+        cartList.innerHTML = `
+          <div style="text-align:center; color:#a0aec0; margin-top:40px; font-size:11px;">
+            <p>Keranjang masih kosong.</p>
+            <p>Klik produk di samping untuk menambahkan.</p>
+          </div>`;
+        document.getElementById('txtSubtotal').innerText = 'Rp 0';
+        document.getElementById('txtTotal').innerText = 'Rp 0';
+        currentTotal = 0;
+        return;
+      }
+
+      cartList.innerHTML = '';
+      currentTotal = 0;
+
+      cart.forEach(item => {
+        const itemTotal = item.price * item.qty;
+        currentTotal += itemTotal;
+
+        const row = document.createElement('div');
+        row.className = 'cart-row';
+        row.innerHTML = `
+          <div>${item.name} (${item.qty}x)</div>
+          <div>${fmt(itemTotal)}</div>
+        `;
+        cartList.appendChild(row);
+      });
+
+      document.getElementById('txtSubtotal').innerText = fmt(currentTotal);
+      document.getElementById('txtTotal').innerText = fmt(currentTotal);
+    }
+
+    function resetCart() {
+      cart = [];
+      renderCart();
+    }
+
+    // PROSES PEMBAYARAN REAL-TIME DENGAN PENAMBAHAN KE TABEL RIWAYAT
+    function processPayment() {
+      if (cart.length === 0) {
+        alert('Keranjang belanja masih kosong! Silakan pilih produk terlebih dahulu.');
+        return;
+      }
+
+      // Format Nomor Transaksi TRX00X
+      const trxId = 'TRX' + String(trxCounter).padStart(3, '0');
+      trxCounter++;
+
+      // Tanggal Hari Ini
+      const today = new Date();
+      const dateStr = String(today.getDate()).padStart(2, '0') + '/' + 
+                      String(today.getMonth() + 1).padStart(2, '0') + '/' + 
+                      String(today.getFullYear()).slice(-2);
+
+      // Tambahkan Baris Baru ke Tabel Riwayat
+      const historyBody = document.getElementById('historyBody');
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>${trxId}</td>
+        <td>${dateStr}</td>
+        <td>${selectedMethod}</td>
+        <td>${fmt(currentTotal)}</td>
+      `;
+      historyBody.prepend(newRow); // Menambahkan ke paling atas tabel
+
+      alert(`Transaksi ${trxId} Berhasil Diproses!\nMetode: ${selectedMethod}\nTotal: ${fmt(currentTotal)}`);
+      
+      resetCart();
+    }
+
+    // Pencarian Produk
+    document.getElementById('searchProduct').addEventListener('input', function() {
+      const keyword = this.value.toLowerCase();
+      const items = document.querySelectorAll('.product-item-card');
+      items.forEach(item => {
+        const title = item.querySelector('.item-title').innerText.toLowerCase();
+        item.style.display = title.includes(keyword) ? '' : 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>

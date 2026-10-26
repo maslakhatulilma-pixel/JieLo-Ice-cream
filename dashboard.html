@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - JieLo Ice Cream</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #ffd7f6; /* Latar pink pastel area utama */
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Sidebar Kiri - Warna Kuning Krem Pastel */
+    .sidebar {
+      width: 270px;
+      background-color: #fcf4c4;
+      border-right: 2px solid #f3e5ab;
+      display: flex;
+      flex-direction: column;
+      padding: 25px 20px;
+      min-height: 100vh;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 35px;
+    }
+
+    .logo-img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #00838f; /* Biru tosca sesuai logo */
+      line-height: 1.1;
+    }
+
+    .menu-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Tombol Menu Biru Pastel Rounded */
+    .menu-item a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      text-decoration: none;
+      color: #2b6cb0;
+      font-weight: 700;
+      font-size: 15px;
+      background-color: #cbe3fb;
+      border: 1.5px solid #90caf9;
+      border-radius: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+      transition: all 0.2s;
+    }
+
+    .menu-item.active a, .menu-item a:hover {
+      background-color: #a3d0fb;
+      border-color: #64b5f6;
+      color: #1e40af;
+      transform: translateY(-1px);
+    }
+
+    /* Tombol Logout Merah Soft */
+    .menu-item-logout a {
+      background-color: #fed7d7;
+      color: #9b2c2c;
+      border-color: #feb2b2;
+    }
+
+    .menu-item-logout a:hover {
+      background-color: #feb2b2;
+      color: #742a2a;
+    }
+
+    /* Area Konten Utama */
+    .main-content {
+      flex: 1;
+      padding: 25px 30px;
+      overflow-y: auto;
+    }
+
+    .page-header {
+      margin-bottom: 20px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      color: #ff527b;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    /* 4 Kartu Ringkasan Sejajar Horizontal */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      padding: 16px 18px;
+      border-radius: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+
+    .stat-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #444;
+      margin-bottom: 2px;
+    }
+
+    .stat-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: #ff527b;
+      line-height: 1.2;
+    }
+
+    .stat-desc {
+      font-size: 11px;
+      color: #777;
+    }
+
+    /* Layout Bawah: Grafik + Peringatan Restock */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+    }
+
+    .card-box {
+      background: #ffffff;
+      padding: 22px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 15px;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 250px;
+      width: 100%;
+    }
+
+    /* Bagian Restock Kanan */
+    .restock-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .restock-header i {
+      color: #f59e0b;
+      font-size: 18px;
+    }
+
+    .restock-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .restock-item {
+      background: #fff0fa;
+      padding: 10px 14px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .restock-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dot-indicator {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-red { background-color: #dc2626; }
+    .dot-orange { background-color: #f59e0b; }
+
+    .item-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .item-status {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #dc2626;
+    }
+
+    .btn-restock {
+      background-color: #dc2626;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-restock.orange {
+      background-color: #f59e0b;
+    }
+
+    .restock-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 25px;
+      padding-top: 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-left { color: #666; }
+    .footer-right { color: #ff527b; text-decoration: none; font-weight: 700; }
+
+    @media (max-width: 1024px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .bottom-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Kiri (Kuning Krem) -->
+  <div class="sidebar">
+    <div class="brand-logo">
+      <img src="logoremove.png" alt="JieLo Logo" class="logo-img">
+      <div class="brand-title">JieLo<br>Ice Cream</div>
+    </div>
+
+    <ul class="menu-list">
+      <li class="menu-item active"><a href="dashboard.html"><i class="fa-solid fa-border-all"></i> Dashboard</a></li>
+      <li class="menu-item"><a href="transaksi.html"><i class="fa-solid fa-receipt"></i> Transaksi</a></li>
+      <li class="menu-item"><a href="produk.html"><i class="fa-solid fa-box"></i> Produk</a></li>
+      <li class="menu-item"><a href="stok.html"><i class="fa-solid fa-boxes-stacked"></i> Stok Barang</a></li>
+      <li class="menu-item"><a href="laporan.html"><i class="fa-solid fa-chart-line"></i> Laporan</a></li>
+      <li class="menu-item"><a href="zakat.html"><i class="fa-solid fa-hand-holding-dollar"></i> Zakat Mal</a></li>
+      <li class="menu-item menu-item-logout"><a href="index.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+    </ul>
+  </div>
+
+  <!-- Area Utama Dashboard -->
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">DASHBOARD</h1>
+      <p class="page-subtitle">Ringkasan kegiatan toko hari ini</p>
+    </div>
+
+    <!-- 4 Ringkasan Statistik Horizontal -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-title">Total Jenis Barang</div>
+        <div class="stat-value">36</div>
+        <div class="stat-desc">Produk terdaftar</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Total Stok Barang</div>
+        <div class="stat-value">200</div>
+        <div class="stat-desc">Unit tersedia</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Stok Menipis</div>
+        <div class="stat-value">12</div>
+        <div class="stat-desc">Barang perlu restock</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Stok Habis</div>
+        <div class="stat-value">0</div>
+        <div class="stat-desc">Barang tidak tersedia</div>
+      </div>
+    </div>
+
+    <!-- Grafik Penjualan & Peringatan Restock -->
+    <div class="bottom-grid">
+      <!-- Grafik Penjualan Bulanan -->
+      <div class="card-box">
+        <div>
+          <div class="card-title">Grafik Penjualan Bulanan</div>
+          <div class="card-subtitle">Estimasi laku sebulan ~150 unit (campur)</div>
+        </div>
+        <div class="chart-container">
+          <canvas id="salesChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Kartu Peringatan Restock Kanan -->
+      <div class="card-box">
+        <div>
+          <div class="restock-header">
+            <i class="fa-solid fa-bell"></i> Peringatan Restock
+          </div>
+          <div class="card-subtitle" style="margin-top: 4px; margin-bottom: 12px;">
+            Barang di bawah minimum stok (20/minggu)
+          </div>
+
+          <div class="restock-list">
+            <div class="restock-item">
+              <div class="restock-info">
+                <div class="dot-indicator dot-red"></div>
+                <div>
+                  <div class="item-name">Wall's Paket Dus (50 pcs)</div>
+                  <div class="item-status">Sisa: 2 Dus (Kritis)</div>
+                </div>
+              </div>
+              <a href="stok.html" class="btn-restock">Restock</a>
+            </div>
+
+            <div class="restock-item">
+              <div class="restock-info">
+                <div class="dot-indicator dot-orange"></div>
+                <div>
+                  <div class="item-name">Campina Neapolitan 5 Liter</div>
+                  <div class="item-status" style="color: #f59e0b;">Sisa: 4 Ember</div>
+                </div>
+              </div>
+              <a href="stok.html" class="btn-restock orange">Restock</a>
+            </div>
+
+            <div class="restock-item">
+              <div class="restock-info">
+                <div class="dot-indicator dot-orange"></div>
+                <div>
+                  <div class="item-name">Joyday Neapolitan 8 Liter</div>
+                  <div class="item-status" style="color: #f59e0b;">Sisa: 5 Ember</div>
+                </div>
+              </div>
+              <a href="stok.html" class="btn-restock orange">Restock</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="restock-footer">
+          <span class="footer-left">Sistem Pembukuan Manual</span>
+          <a href="transaksi.html" class="footer-right">Kasir →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Grafik Penjualan Chart.js
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Wall\'s', 'Campina', 'Aice', 'Joyday', 'Indofood', 'Miami', 'Korudo', 'Dellice'],
+        datasets: [{
+          label: 'Penjualan',
+          data: [35, 25, 25, 20, 15, 12, 10, 8],
+          backgroundColor: '#a6a6a6',
+          borderRadius: 4,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { 
+          y: { 
+            beginAtZero: true, 
+            max: 40,
+            ticks: { stepSize: 5 }
+          } 
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
