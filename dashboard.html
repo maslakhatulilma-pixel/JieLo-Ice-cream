@@ -22,7 +22,7 @@
       display: flex;
     }
 
-    /* Sidebar Kiri - Kuning Krem Pastel */
+    /* Sidebar Kiri */
     .sidebar {
       width: 270px;
       background-color: #fcf4c4;
@@ -31,6 +31,7 @@
       flex-direction: column;
       padding: 25px 20px;
       min-height: 100vh;
+      flex-shrink: 0;
     }
 
     .brand-logo {
@@ -188,42 +189,40 @@
       margin-bottom: 18px;
     }
 
-    /* Layout Grafik dengan Sumbu Y & Grid */
+    /* Layout Grafik Sumbu Y & Grid */
     .chart-wrapper {
       display: flex;
       align-items: flex-end;
       gap: 10px;
-      height: 220px;
-      padding-top: 20px;
-      position: relative;
+      height: 210px;
+      padding-top: 10px;
     }
 
-    /* Sumbu Y (Angka Skala di Kiri) */
     .y-axis {
       display: flex;
       flex-direction: column-reverse;
       justify-content: space-between;
-      height: 180px;
+      height: 160px;
       font-size: 11px;
       font-weight: 600;
       color: #718096;
-      padding-right: 5px;
+      padding-right: 4px;
       text-align: right;
       width: 25px;
+      margin-bottom: 22px;
     }
 
-    /* Container Utama Grafik & Garis Grid */
     .chart-container {
       flex: 1;
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-      height: 180px;
+      height: 160px;
       border-bottom: 1.5px solid #cbd5e0;
       position: relative;
+      margin-bottom: 22px;
     }
 
-    /* Garis Grid Horizontal */
     .chart-grid {
       position: absolute;
       top: 0;
@@ -242,12 +241,11 @@
       width: 100%;
     }
 
-    /* Batang Grafik & Angka Nilai */
     .bar-group {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 2px;
       flex: 1;
       cursor: pointer;
       position: relative;
@@ -260,11 +258,10 @@
       font-size: 11px;
       font-weight: 700;
       color: #4a5568;
-      margin-bottom: 2px;
     }
 
     .bar {
-      width: 32px;
+      width: 30px;
       background-color: #cbd5e0;
       border-radius: 4px 4px 0 0;
       transition: all 0.2s ease-in-out;
@@ -283,7 +280,6 @@
       font-size: 10px;
       font-weight: 700;
       color: #4a5568;
-      margin-top: 6px;
       position: absolute;
       bottom: -22px;
     }
@@ -382,4 +378,221 @@
       <li class="menu-item"><a href="transaksi.html"><i class="fa-solid fa-receipt"></i> Transaksi</a></li>
       <li class="menu-item"><a href="produk.html"><i class="fa-solid fa-box"></i> Produk</a></li>
       <li class="menu-item"><a href="stok.html"><i class="fa-solid fa-boxes-stacked"></i> Stok Barang</a></li>
-      <li class="menu-item
+      <li class="menu-item"><a href="laporan.html"><i class="fa-solid fa-chart-line"></i> Laporan</a></li>
+      <li class="menu-item"><a href="zakat.html"><i class="fa-solid fa-hand-holding-dollar"></i> Zakat Mal</a></li>
+      <li class="menu-item menu-item-logout"><a href="index.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+    </ul>
+  </div>
+
+  <!-- Area Utama Konten -->
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">DASHBOARD</h1>
+      <p class="page-subtitle">Ringkasan kegiatan toko hari ini</p>
+    </div>
+
+    <!-- 4 KARTU STATISTIK (AUTOMATIC REAL-TIME) -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-title">Total Jenis Barang</div>
+        <div class="stat-value" id="valTotalJenis">0</div>
+        <div class="stat-desc">Produk terdaftar</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Total Stok Barang</div>
+        <div class="stat-value" id="valTotalStok">0</div>
+        <div class="stat-desc">Unit tersedia</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Stok Menipis</div>
+        <div class="stat-value" id="valStokMenipis" style="color:#dd6b20;">0</div>
+        <div class="stat-desc">Barang perlu restock</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Stok Habis</div>
+        <div class="stat-value" id="valStokHabis" style="color:#e53e3e;">0</div>
+        <div class="stat-desc">Barang tidak tersedia</div>
+      </div>
+    </div>
+
+    <!-- GRID DUA KOLOM -->
+    <div class="dashboard-grid">
+      <!-- Grafik Penjualan Bulanan -->
+      <div class="card-box" style="padding-bottom: 30px;">
+        <div class="card-header-title">Grafik Penjualan Bulanan</div>
+        <div class="card-header-sub">Estimasi laku sebulan ~150 unit (campur)</div>
+
+        <div class="chart-wrapper">
+          <div class="y-axis">
+            <span>0</span>
+            <span>5</span>
+            <span>10</span>
+            <span>15</span>
+            <span>20</span>
+            <span>25</span>
+            <span>30</span>
+            <span>35</span>
+            <span>40</span>
+          </div>
+
+          <div class="chart-container">
+            <div class="chart-grid">
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+              <div class="grid-line"></div>
+            </div>
+
+            <div class="bar-group" title="Wall's: 35 unit">
+              <span class="bar-val">35</span>
+              <div class="bar" style="height: 140px;"></div>
+              <span class="bar-label">Wall's</span>
+            </div>
+
+            <div class="bar-group" title="Campina: 25 unit">
+              <span class="bar-val">25</span>
+              <div class="bar" style="height: 100px;"></div>
+              <span class="bar-label">Campina</span>
+            </div>
+
+            <div class="bar-group" title="Aice: 25 unit">
+              <span class="bar-val">25</span>
+              <div class="bar" style="height: 100px;"></div>
+              <span class="bar-label">Aice</span>
+            </div>
+
+            <div class="bar-group" title="Joyday: 20 unit">
+              <span class="bar-val">20</span>
+              <div class="bar" style="height: 80px;"></div>
+              <span class="bar-label">Joyday</span>
+            </div>
+
+            <div class="bar-group" title="Indofood: 15 unit">
+              <span class="bar-val">15</span>
+              <div class="bar" style="height: 60px;"></div>
+              <span class="bar-label">Indofood</span>
+            </div>
+
+            <div class="bar-group" title="Miami: 12 unit">
+              <span class="bar-val">12</span>
+              <div class="bar" style="height: 48px;"></div>
+              <span class="bar-label">Miami</span>
+            </div>
+
+            <div class="bar-group" title="Korudo: 10 unit">
+              <span class="bar-val">10</span>
+              <div class="bar" style="height: 40px;"></div>
+              <span class="bar-label">Korudo</span>
+            </div>
+
+            <div class="bar-group" title="Dellice: 8 unit">
+              <span class="bar-val">8</span>
+              <div class="bar" style="height: 32px;"></div>
+              <span class="bar-label">Dellice</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Peringatan Restock -->
+      <div class="card-box">
+        <div class="card-header-title"><i class="fa-solid fa-bell"></i> Peringatan Restock</div>
+        <div class="card-header-sub">Barang di bawah minimum stok (&le; 5 unit)</div>
+
+        <div class="restock-list" id="restockContainer">
+          <!-- Diisi otomatis oleh JS -->
+        </div>
+
+        <div class="bottom-link-row">
+          <span>Sistem Pembukuan Otomatis</span>
+          <a href="transaksi.html" class="link-kasir">Kasir &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const initialProducts = [
+      { name: "Neapolitan Campina 5 Liter", category: "5 Liter", merk: "Campina", price: 175000, stock: 4 },
+      { name: "Populaire coklat Wall's", category: "Cup", merk: "Wall's", price: 4000, stock: 7 },
+      { name: "Neapolitan Miami 5 Liter", category: "5 Liter", merk: "Miami", price: 150000, stock: 10 },
+      { name: "Es Susu Joyday", category: "Stick", merk: "Joyday", price: 2000, stock: 50 },
+      { name: "Espessia Strawberry Indofood", category: "Dus", merk: "Indofood", price: 98000, stock: 2 },
+      { name: "Paddle pop choco magma", category: "Eceran", merk: "Joyday", price: 2000, stock: 0 }
+    ];
+
+    function getProducts() {
+      const saved = localStorage.getItem('jielo_products');
+      if (!saved) {
+        localStorage.setItem('jielo_products', JSON.stringify(initialProducts));
+        return initialProducts;
+      }
+      return JSON.parse(saved);
+    }
+
+    function updateDashboard() {
+      const products = getProducts();
+
+      let totalJenis = products.length;
+      let totalStok = 0;
+      let stokMenipis = 0;
+      let stokHabis = 0;
+
+      const restockContainer = document.getElementById('restockContainer');
+      if (restockContainer) {
+        restockContainer.innerHTML = '';
+
+        products.forEach(p => {
+          const qty = parseInt(p.stock) || 0;
+          totalStok += qty;
+
+          if (qty === 0) {
+            stokHabis++;
+          } else if (qty <= 5) {
+            stokMenipis++;
+          }
+
+          if (qty <= 5) {
+            const isKritis = qty <= 2;
+            const statusClass = isKritis ? '' : 'warning';
+            const dotClass = isKritis ? '' : 'dot-warning';
+            const textStatus = isKritis ? '(Kritis)' : '';
+
+            const itemHtml = `
+              <div class="restock-item">
+                <div class="restock-info">
+                  <div class="dot-status ${dotClass}"></div>
+                  <div>
+                    <div class="restock-name">${p.name}</div>
+                    <div class="restock-qty">Sisa: ${qty} Unit ${textStatus}</div>
+                  </div>
+                </div>
+                <a href="stok.html" class="btn-restock ${statusClass}">Restock</a>
+              </div>
+            `;
+            restockContainer.innerHTML += itemHtml;
+          }
+        });
+
+        if (restockContainer.innerHTML === '') {
+          restockContainer.innerHTML = '<div style="text-align:center; color:#a0aec0; padding:20px; font-size:12px;">Semua stok barang aman!</div>';
+        }
+      }
+
+      document.getElementById('valTotalJenis').innerText = totalJenis;
+      document.getElementById('valTotalStok').innerText = totalStok;
+      document.getElementById('valStokMenipis').innerText = stokMenipis;
+      document.getElementById('valStokHabis').innerText = stokHabis;
+    }
+
+    updateDashboard();
+  </script>
+
+</body>
+</html>
