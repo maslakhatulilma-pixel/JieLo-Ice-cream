@@ -22,7 +22,7 @@
       display: flex;
     }
 
-    /* Sidebar Kiri - Kuning Krem Pastel */
+    /* Sidebar Kiri */
     .sidebar {
       width: 270px;
       background-color: #fcf4c4;
@@ -188,35 +188,47 @@
       margin-bottom: 18px;
     }
 
-    /* Simple CSS Bar Chart */
+    /* Grafik Penjualan Bulanan Interaktif */
     .chart-container {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-      height: 180px;
-      padding-top: 20px;
-      border-bottom: 1px solid #e2e8f0;
+      height: 190px;
+      padding-top: 25px;
+      border-bottom: 1.5px solid #cbd5e0;
     }
 
     .bar-group {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex: 1;
+      cursor: pointer;
+      position: relative;
     }
 
     .bar {
-      width: 32px;
+      width: 34px;
       background-color: #cbd5e0;
       border-radius: 4px 4px 0 0;
-      transition: height 0.3s ease;
+      transition: all 0.2s ease-in-out;
+    }
+
+    /* Efek Hover Batang Grafik */
+    .bar-group:hover .bar {
+      background-color: #ff527b;
+      transform: scaleY(1.03);
     }
 
     .bar-label {
       font-size: 10px;
       font-weight: 700;
       color: #4a5568;
+    }
+
+    .bar-group:hover .bar-label {
+      color: #ff527b;
     }
 
     /* List Peringatan Restock */
@@ -352,20 +364,44 @@
 
     <!-- GRID DUA KOLOM -->
     <div class="dashboard-grid">
-      <!-- Grafik Penjualan Bulanan -->
+      <!-- Grafik Penjualan Bulanan (Tooltip Angka Aktif) -->
       <div class="card-box">
         <div class="card-header-title">Grafik Penjualan Bulanan</div>
         <div class="card-header-sub">Estimasi laku sebulan ~150 unit (campur)</div>
 
         <div class="chart-container">
-          <div class="bar-group"><div class="bar" style="height: 140px;"></div><span class="bar-label">Wall's</span></div>
-          <div class="bar-group"><div class="bar" style="height: 100px;"></div><span class="bar-label">Campina</span></div>
-          <div class="bar-group"><div class="bar" style="height: 100px;"></div><span class="bar-label">Aice</span></div>
-          <div class="bar-group"><div class="bar" style="height: 80px;"></div><span class="bar-label">Joyday</span></div>
-          <div class="bar-group"><div class="bar" style="height: 60px;"></div><span class="bar-label">Indofood</span></div>
-          <div class="bar-group"><div class="bar" style="height: 48px;"></div><span class="bar-label">Miami</span></div>
-          <div class="bar-group"><div class="bar" style="height: 40px;"></div><span class="bar-label">Korudo</span></div>
-          <div class="bar-group"><div class="bar" style="height: 30px;"></div><span class="bar-label">Dellice</span></div>
+          <div class="bar-group" title="Wall's: 35 unit">
+            <div class="bar" style="height: 140px;"></div>
+            <span class="bar-label">Wall's</span>
+          </div>
+          <div class="bar-group" title="Campina: 25 unit">
+            <div class="bar" style="height: 100px;"></div>
+            <span class="bar-label">Campina</span>
+          </div>
+          <div class="bar-group" title="Aice: 25 unit">
+            <div class="bar" style="height: 100px;"></div>
+            <span class="bar-label">Aice</span>
+          </div>
+          <div class="bar-group" title="Joyday: 20 unit">
+            <div class="bar" style="height: 80px;"></div>
+            <span class="bar-label">Joyday</span>
+          </div>
+          <div class="bar-group" title="Indofood: 15 unit">
+            <div class="bar" style="height: 60px;"></div>
+            <span class="bar-label">Indofood</span>
+          </div>
+          <div class="bar-group" title="Miami: 12 unit">
+            <div class="bar" style="height: 48px;"></div>
+            <span class="bar-label">Miami</span>
+          </div>
+          <div class="bar-group" title="Korudo: 10 unit">
+            <div class="bar" style="height: 40px;"></div>
+            <span class="bar-label">Korudo</span>
+          </div>
+          <div class="bar-group" title="Dellice: 8 unit">
+            <div class="bar" style="height: 32px;"></div>
+            <span class="bar-label">Dellice</span>
+          </div>
         </div>
       </div>
 
